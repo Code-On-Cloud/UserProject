@@ -21,8 +21,13 @@ import org.springframework.web.client.RestTemplate;
 public class UserController {
 
 	private RestTemplate restTemplate;
-	@Value("${user.external.serviceUrl}")
-	private String externalServiceUrl;
+	
+	@Value("${user.external.hostname}")
+	private String hostname;
+	
+	@Value("${user.external.userinfoservice}")
+	private String infoService;
+	
 	private static Logger log = LoggerFactory.getLogger(UserController.class);
 	
 	@Autowired
@@ -42,8 +47,8 @@ public class UserController {
 	}
 	
 	private String getAddressByExternalService() throws RestClientException, IOException {
-		log.info("User info microservice url:" + externalServiceUrl);
-		ResponseEntity<String> response = restTemplate.exchange(externalServiceUrl, HttpMethod.GET, getHeaders(),String.class);
+		log.info("User info microservice url:" + hostname + infoService);
+		ResponseEntity<String> response = restTemplate.exchange(hostname + infoService, HttpMethod.GET, getHeaders(),String.class);
 		return response.getBody();
 	}
 	
